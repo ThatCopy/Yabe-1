@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
-const request = require("request");
+const fetch = require("node-fetch");
 
-exports.run = (client, message, [args, ...words]) => {
+exports.run = async (client, message, [args, ...words]) => {
     const regex = /[!*();,:@&=+$.\/?%#[\]]/g;
 
     //Commented langs just translate to english
@@ -148,24 +148,24 @@ exports.run = (client, message, [args, ...words]) => {
 
         let words2translate = words.join(" ").toLowerCase().replace(regex, "");
         let link = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&ie=UTF-8&oe=UTF-8&q=${encodeURI(words2translate)}`;
+    
+        let res = await fetch(link);
+        if (!res.ok)
+            console.log(error);
 
-        request.get(link, (error, response, body) => {
-            if (error)
-                console.log(error);
-
-            try {
-                let translation = JSON.parse(body);
-                let embed = new Discord.MessageEmbed()
-                    .setDescription(translation[0][0][0])
-                    .setColor(client.config.embedColor);
-                message.channel.send(`Translated from ${langs[sourceLang]} to ${langs[targetLang]}:`);
-                message.channel.send(embed);
-            }
-            catch (err) {
-                console.log(err);
-                message.channel.send("Something went wrong while translating, please check you formatted it correctly and try again.\nor if you believe this is a bug please report it with `yabe bug`");
-            }
-        });
+        try {
+            let translation = await res.json();
+            let embed = new Discord.MessageEmbed()
+                .setDescription(translation[0][0][0])
+                .setColor(client.config.embedColor);
+            message.channel.send(`Translated from ${langs[sourceLang]} to ${langs[targetLang]}:`);
+            message.channel.send(embed);
+        }
+        catch (err) {
+            console.log(err);
+            message.channel.send("Something went wrong while translating, please check you formatted it correctly and try again.\nor if you believe this is a bug please report it with `yabe bug`");
+        }
+        
     }
 }
 

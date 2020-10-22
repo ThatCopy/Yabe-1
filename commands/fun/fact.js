@@ -1,25 +1,24 @@
-const request = require("request");
 const Discord = require('discord.js');
+const fetch = require("node-fetch"); 
 
-exports.run = (client, message) => {
+exports.run = async (client, message) => {
     const baseUrl = "https://uselessfacts.jsph.pl/random.json?language=en";
 
-    request(baseUrl, function (error, _response, body) {
-        if (error) {
-            message.channel.send("Sorry something seems to have gone wrong!");
-            console.log(error);
-            return;
-        }
+    let res = await fetch(baseUrl);
 
-        body = JSON.parse(body);
-        const text = body.text;
+    if (!res.ok) {
+        message.channel.send("Sorry something seems to have gone wrong!");
+        return;
+    }
 
-        const emb = new Discord.MessageEmbed();
-            emb.setColor(client.config.embedColor);
-            emb.setDescription(text.replace(/`/g, "'"));
+    json = await res.json();
+    const text = json.text;
+
+    const emb = new Discord.MessageEmbed();
+        emb.setColor(client.config.embedColor);
+        emb.setDescription(text.replace(/`/g, "'"));
 
         message.channel.send(emb);
-    })
 }
 
 exports.help = {
