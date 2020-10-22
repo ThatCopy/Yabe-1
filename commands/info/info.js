@@ -9,7 +9,7 @@ exports.run = (client, message, _args) => {
             "Adam(canarado) - the head developer for the learning mode of Yabe and the Yabe framework\n\n" +
             "Hesham(IllusionMan1212) - the bug fixer and co-developer of Yabe\n\n" +
             "Marvin(MemeSenpai) - Images Command Creator/Lead(ICC) and co-developer of Yabe\n\n" +
-            "Join our [Discord](https://discord.gg/bhZGHCm) to talk with the devs and give your thoughts on Yabe\n\n")
+            "Join our [Discord](https://discord.gg/yS3CFbV) to talk with the devs and give your thoughts on Yabe\n\n")
         .setTimestamp()
         .setFooter(`Version:  ${version} | Currently on ${client.guilds.cache.size} servers with ${client.users.cache.size} users.`)
         .setColor(client.config.embedColor);
