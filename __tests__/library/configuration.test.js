@@ -6,7 +6,7 @@ describe('Configuration', () => {
 
   test('Correct version', () => {
     const { botVersion } = config;
-    expect(botVersion).toEqual('0.4.0');
+    expect(botVersion).toEqual('0.5.0');
   });
 
   test('Expected developers', () => {
